@@ -1,0 +1,26 @@
+{
+    "name": "myklon/brackets-checker",
+    "description": "A simple library for validating balanced brackets in a string",
+    "type": "library",
+    "require": {
+        "phpunit/phpunit": "10.0.x-dev"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Myklon\\BracketsChecker\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Myklon\\BracketsChecker\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Myklon",
+            "email": "keironov@yandex.ru"
+        }
+    ],
+    "minimum-stability": "stable"
+}
