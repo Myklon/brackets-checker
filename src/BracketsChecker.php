@@ -1,19 +1,19 @@
 <?php
 
 namespace Myklon\BracketsChecker;
-use PHPUnit\Framework\EmptyStringException;
 
 class BracketsChecker
 {
-    protected array $openBrackets = ['(', '[', '{', '<'];
-    protected array $closeBrackets = [')', ']', '}', '>'];
-    public string $valideString = '';
+    protected array $openBrackets = ['(', '[', '{'];
+    protected array $closeBrackets = [')', ']', '}'];
+    public string $baseString = '';
+    public string $validString = '';
 
     public function check(string $str): bool
     {
-        $validStr = $this->validate($str);
-        return $this->isCorrect($validStr);
-
+        $validString = $this->validateString($str);
+        $validArray = $this->validateArray($validString);
+        return $this->isCorrect($validArray);
     }
 
     public function getAvailableBrackets() : string
@@ -27,32 +27,45 @@ class BracketsChecker
         return $brackets;
     }
 
-    protected function validate($str)
+    protected function validateString($str): string
     {
         $validStr = trim($str);
         $validStr = htmlspecialchars($validStr);
-        if(empty($validStr))
-        {
-            throw new EmptyStringException("Строка не может быть пустой");
+        var_dump($validStr);
+        if(empty($validStr)) {
+            throw new \InvalidArgumentException("Строка не может быть пустой");
         }
-        $this->valideString = $validStr;
+        $this->baseString = $validStr;
         return $validStr;
     }
 
-    protected function isCorrect(string $str)
+    protected function validateArray(string $validString): array
     {
-        $arr = str_split($str);
-        $last = 0;
-        foreach ($arr as $value) {
-            if ($value == '(') {
-                $last++;
-            } elseif ($value == ')') {
-                $last--;
-            }
-            if ($last == -1) {
-                return false;
+        $validArray = str_split($validString);
+        $validArray = array_filter($validArray, function ($v) {
+            return in_array($v, $this->openBrackets) || in_array($v, $this->closeBrackets);
+        });
+        if(empty($validArray)) {
+            throw new \InvalidArgumentException("Строка не содержит необходимых символов");
+        }
+        $this->validString = implode($validArray);
+        return $validArray;
+    }
+
+    protected function isCorrect(array $validArray): bool
+    {
+        $stack = [];
+        foreach ($validArray as $bracket) {
+            if (in_array($bracket, $this->openBrackets)) {
+                $stack[] = $bracket;
+            } else {
+                $prev = array_pop($stack);
+                // Поиск ключа текущей закрывающей скобки и её сравнение c ключом последней открывающей скобки
+                if (array_search($bracket, $this->closeBrackets) !== array_search($prev, $this->openBrackets)) {
+                    return false;
+                }
             }
         }
-        return !($last > 0);
+        return empty($stack);
     }
 }
