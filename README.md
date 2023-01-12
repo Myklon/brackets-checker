@@ -1,3 +1,6 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+![Packagist Version](https://img.shields.io/packagist/v/myklon/brackets-checker)
+
 A simple library for validating balanced brackets in a string
 
 ## Installation
