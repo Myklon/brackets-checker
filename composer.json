@@ -5,7 +5,8 @@
     "keywords": ["brackets"],
     "homepage": "https://github.com/Myklon/brackets-checker",
     "license": "MIT",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Myklon",
